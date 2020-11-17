@@ -46,31 +46,16 @@ function Home() {
       }
     } catch (err) {
       dispatch(hideLoader());
-      // dispatch(showNotification("error", err.message));
     }
   })();
 }, [])
 
-    // .then(data => {
-    //   console.log(data);
-    //   // pizzaList(data);
-    // }
-    // useEffect(() => {
-    //   debugger;
-    //   if(type == true){
-    //   pizzaItems = selectedItems.filter((obj) => {return obj.isVeg})
-    //   } else {
-    //   pizzaItems = pizzaItems.filter((obj) => {return obj.isVeg})
-    //   }
-      
-    // }, [type]);
+   
     const handleTypeChange = (checked) => {
       setPizzaType(checked);
       if(checked){
-        // dispatch(pizzaList(pizzaItems.filter((obj) => {return obj.isVeg})));
         dispatch(selectedPizzaList(pizzaItems.filter((obj) => {return obj.isVeg})));
       } else {
-        // dispatch(pizzaList(pizzaItems.filter((obj) => {return !obj.isVeg})))
         dispatch(selectedPizzaList(pizzaItems.filter((obj) => {return !obj.isVeg})));
       }
     }
@@ -117,8 +102,6 @@ function Home() {
       dispatch(showNotification("warning", "Item removed from cart"));
       dispatch(hideLoader());
     }
-    // let pizzaItems = useSelector((state) => state.commonReducer.pizzaList);
-    // pizzaItems = pizzaItems.filter((obj) => {return obj.isVeg})
 
   return (
     <>

@@ -12,11 +12,7 @@ import {
 
 const { Option } = Select;
 function Popup(props) {
-  //   state = {
-  //     visible: false,
-  //   };
   const dispatch = useDispatch();
-//   const pizzaItems = useSelector((state) => state.commonReducer.pizzaList);
   const [addOn, setAddOn] = useState("small");
   const [toppings, setToppings] = useState([]);
   const selectedItems = useSelector(
@@ -31,9 +27,6 @@ function Popup(props) {
        setVisible(item.isPopUp);
    }, [item.isPopUp])
   const hide = () => {
-    // this.setState({
-    //   visible: false,
-    // });
     dispatch(selectedPizzaList(selectedItems.map((obj) => {
         if(obj.isPopUp == item.isPopUp){
             obj.isPopUp = false;
@@ -44,11 +37,9 @@ function Popup(props) {
         
     })))
     setVisible(false);
-    // dispatch(isPopUp(true));
   };
 
   const handleVisibleChange = (visible) => {
-    // this.setState({ visible });
     dispatch(selectedPizzaList(selectedItems.map((obj) => {
         if(obj.isPopUp == item.isPopUp){
             obj.isPopUp = false;
@@ -59,7 +50,6 @@ function Popup(props) {
         
     })))
     setVisible(visible);
-    // dispatch(isPopUp(true));
   };
 
   const AddToCart = () => {
@@ -69,7 +59,7 @@ function Popup(props) {
     dispatch(saveCartItems(cartItem));
     dispatch(hideLoader());
 
-    dispatch(showNotification("success", "pizza added to cart"));
+    dispatch(showNotification("success", "pizza added to cart!!! Please visit the cart"));
   };
   console.log("item", item);
   return (
@@ -83,8 +73,6 @@ function Popup(props) {
             onChange={(val) => setAddOn(val)}
             allowClear
           >
-            {/* <Option value="small">Small</Option>
-        <Option value="medium">Medium</Option> */}
             {item.size[0].items.map((obj) => {
               return (
                 <Option key={obj.size} value={obj.size}>
@@ -125,7 +113,6 @@ function Popup(props) {
       visible={visible}
       onVisibleChange={handleVisibleChange}
     >
-      {/* <Button type="primary">Click me</Button> */}
     </Popover>
   );
 }

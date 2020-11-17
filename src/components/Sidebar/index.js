@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { Menu, Layout } from "antd";
-import Auth from "../../utils/auth";
 import { useHistory, Link, useLocation } from "react-router-dom";
+import { ShoppingCartOutlined }  from '@ant-design/icons';
 import AppsIcon from "../../assets/icons/apps.svg";
 import LogOutIcon from "../../assets/icons/log-off.svg";
 
@@ -18,7 +18,7 @@ const MENU = [
     linkTo: "/dashboard/home",
   },{
     key: "cart",
-    icon: <img src={AppsIcon} alt="Home" className="anticon" />,
+    icon: <ShoppingCartOutlined  style={{float:'right', fontSize: '40px'}}  />,
     title: "Cart Items",
     linkTo: "/dashboard/cart",
   }
@@ -38,10 +38,8 @@ const Sidebar = () => {
   const Logout = async () => {
     // LOGOUT API NOT WORKING
     // const jwt = localStorage.getItem('user_token');
-    // await userLogout(jwt);
-    Auth.logout(() => {
+    // await userLogout(jwt)
       history.push("/");
-    });
   };
 
   const init = useCallback(() => {

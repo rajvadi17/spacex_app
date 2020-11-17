@@ -1,6 +1,5 @@
 import React from "react";
 import { Layout, Button, Input } from "antd";
-import { ShoppingCartOutlined }  from '@ant-design/icons';
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../../duck/actions/commonActions";
 import hamburgerIcon from "../../assets/icons/hamburger.svg";
@@ -22,9 +21,10 @@ const HeaderBar = () => {
         <Button onClick={toggleCollapsed}>
           <img src={hamburgerIcon} alt="menu" />
         </Button>
+        
       </div>
-      <div className="inline" style={{float:'right'}}>
-      <ShoppingCartOutlined  style={{float:'right', fontSize: '40px'}} onClick={() => history.push('#/dashboard/cart')}/>
+      <div className="heading" >
+      <h1>Local Pizza Store</h1>
       </div>
     </Header>
   );

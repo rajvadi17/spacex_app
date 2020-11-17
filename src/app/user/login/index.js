@@ -1,7 +1,6 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
 import { userLogin } from "../../../api/login";
-import Auth from "../../../utils/auth";
 import { useDispatch } from "react-redux";
 import {
   showNotification,
@@ -25,15 +24,28 @@ const tailLayout = {
   },
 };
 
+const users = [{
+  username: 'demo',
+  password: 'demo'
+}, { username: 'vadi',
+password: 'vadi'}]
+
 const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const onFinish = async (values) => {
     try {
       dispatch(showLoader());
-      const response = await userLogin(values);
-      Auth.login({ ...response, username: values.username });
+      const user = users.filter((obj) => obj.username == values.username);
+      if(user.length && user[0].username == values.username && user[0].password == values.password){
       history.push("/dashboard/home");
+      } else if(!user.length){
+      dispatch(showNotification("error", "User not found"));
+      }
+      else if(user.length && user[0].password != values.password){
+
+      dispatch(showNotification("error", "Password doesn't match"));
+      }
       dispatch(hideLoader());
     } catch (err) {
       dispatch(hideLoader());

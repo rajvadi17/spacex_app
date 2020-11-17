@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { List, Avatar, Card, Col, Row, Switch, Select, Rate  } from 'antd';
+import { List, Avatar  } from 'antd';
 import  { useSelector, useDispatch } from 'react-redux';
 import './cart.scss';
 // import Popup from './popup';
 
 
-const { Meta } = Card;
-const { Option } = Select;
 function CardDetails() {
   const cartItems = useSelector((state) => state.commonReducer.cartItems);
   let total = 0;
