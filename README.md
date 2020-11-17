@@ -8,7 +8,6 @@ Insall following packages before running:
 less-cli is used to customize ant-design theme and convert less to css for app usage
 ----------------------------------------------------
 
-## Available Scripts
 
 In the project directory, you can run:
 
