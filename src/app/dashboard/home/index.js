@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { List, Avatar, Card, Col, Row, Switch, Select, Rate  } from 'antd';
+import { List, Avatar, Card, Col, Row, Switch, Select, Rate,Input, Button  } from 'antd';
 import {
   showNotification,
   showLoader,
@@ -10,10 +10,12 @@ import { PlusOutlined, MinusOutlined }  from '@ant-design/icons';
 import {getPizzaList} from '../../../api/login';
 import {pizzaList, selectedPizzaList, removeCartItem} from '../../../duck/actions/commonActions';
 import Popup from './popup';
+import LogOutIcon from "../../../assets/icons/log-off.svg";
 
 
 const { Meta } = Card;
 const { Option } = Select;
+const { Search } = Input;
 function Home() {
   const dispatch = useDispatch();
   const [type, setPizzaType] = useState('Veg');
@@ -21,6 +23,7 @@ function Home() {
   const selectedItems = useSelector((state) => state.commonReducer.selectedItems);
   const cartItems = useSelector((state) => state.commonReducer.cartItems);
   const [sortType, setSortType] = useState('Price');
+  const [disabled, setDisabled] = useState(true);
   useEffect(() => {
    
   const onFinish = (async () => {
@@ -37,7 +40,7 @@ function Home() {
         })
       dispatch(pizzaList(response));
       
-      dispatch(selectedPizzaList(response.filter((obj) => {return obj.isVeg})));
+      dispatch(selectedPizzaList(response));
       console.log(pizzaItems);
       dispatch(hideLoader());
       } else {
@@ -103,12 +106,40 @@ function Home() {
       dispatch(hideLoader());
     }
 
+    const onSearch = (val) => {
+     const _selectedItems = pizzaItems.filter((obj)=> {
+       if(obj.name.includes(val)){
+         return true;
+       }
+     })
+     dispatch(selectedPizzaList(_selectedItems));
+    }
+
+
+    const toggle = () => {
+      setDisabled(!disabled);
+      if(disabled == true){
+        type == 'Veg' ? dispatch(selectedPizzaList(pizzaItems.filter((obj) => {return obj.isVeg }))) :
+        dispatch(selectedPizzaList(pizzaItems.filter((obj) => {return !obj.isVeg })))
+        
+      } else {
+        dispatch(selectedPizzaList(pizzaItems));
+        
+      }
+    }
+
   return (
     <>
     
     <Row gutter={16}>
-    <Col span={11}>
-    <Switch checkedChildren="Veg" unCheckedChildren="Non-veg" defaultChecked onChange={(checked) => {handleTypeChange(checked)}}/>
+    <Col span={4}>
+    <Switch  disabled={disabled} checkedChildren="Veg" unCheckedChildren="Non-veg" defaultChecked onChange={(checked) => {handleTypeChange(checked)}}/>
+    <Button type="primary" onClick={toggle} style={{    height: '30px', borderRadius: '37px'}}>
+        <img src={LogOutIcon} style={{    width: '16px'}}/>
+      </Button>
+    </Col>
+    <Col span={8}>
+    <Search placeholder="input search text"  allowClear onSearch={onSearch} enterButton />
     </Col>
     <Col span={11}>
     

@@ -6,3 +6,11 @@
     width: 200; 
     float: 'right';
 }
+
+.ant-notification .ant-notification-topRight{  
+     z-index: 9999;
+}
+
+.ant-input-group-addon{
+    padding: 0px;
+}

@@ -68,7 +68,7 @@ function Popup(props) {
         <div>
           <p>Select Size: </p>
           <Select
-            defaultValue="small"
+            defaultValue="Regular"
             style={{ width: 150 }}
             onChange={(val) => setAddOn(val)}
             allowClear
