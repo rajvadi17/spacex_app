@@ -56,7 +56,7 @@ function CardDetails() {
         <br/>
     <div className="item-no">X{cartItems.filter((obj) => obj.id == item.id).length}</div>
     <br/>
-        <div className="add-ons"><p>Add-Ons: {item.addOn}</p><p>Toppings: {item.toppings}</p><p>Rs. {item.price}</p></div>
+        <div className="add-ons"><p>Add-Ons: {item.addOn}</p><p>Toppings: {item.toppings.join(',')}</p><p>Rs. {item.price}</p></div>
         <br/>
         <div><Button onClick={() => handleAdd(item)}>Add</Button></div>
         <div className="remove-item"><Button danger onClick={() => handleRemove(item)}> Remove</Button></div>
