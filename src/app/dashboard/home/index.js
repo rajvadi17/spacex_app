@@ -6,7 +6,7 @@ import {
   hideLoader,
 } from "../../../duck/actions/commonActions";
 import  { useSelector, useDispatch } from 'react-redux';
-import { PlusOutlined, MinusOutlined }  from '@ant-design/icons';
+import { PlusOutlined, MinusOutlined,SortDescendingOutlined, SortAscendingOutlined }  from '@ant-design/icons';
 import {getPizzaList} from '../../../api/login';
 import {pizzaList, selectedPizzaList, removeCartItem} from '../../../duck/actions/commonActions';
 import Popup from './popup';
@@ -22,6 +22,7 @@ function Home() {
   const pizzaItems = useSelector((state) => state.commonReducer.pizzaList);
   const selectedItems = useSelector((state) => state.commonReducer.selectedItems);
   const cartItems = useSelector((state) => state.commonReducer.cartItems);
+  const [sortOrder, setSortOrder] = useState('asc');
   const [sortType, setSortType] = useState('Price');
   const [disabled, setDisabled] = useState(true);
   useEffect(() => {
@@ -128,6 +129,13 @@ function Home() {
       }
     }
 
+
+    const handleSortOrder = (val) => {
+      setSortOrder(val);
+      val == 'dsc' ? 
+      dispatch(selectedPizzaList(selectedItems.sort(function(a, b) { return a[sortType.toLowerCase()] - b[sortType.toLowerCase()] }))) :
+      dispatch(selectedPizzaList(selectedItems.sort(function(a, b) { return b[sortType.toLowerCase()] - a[sortType.toLowerCase()] })))
+    }
   return (
     <>
     
@@ -149,6 +157,8 @@ function Home() {
       
     </Select>
     <h4 style={{  float: 'right', fontSize: '15px' }}>SortBy</h4>
+    {sortOrder == 'asc' && <SortDescendingOutlined className="ascending-icon" onClick={() => handleSortOrder('dsc')}/>}
+    {sortOrder == 'dsc' && <SortAscendingOutlined className="ascending-icon" onClick={() => handleSortOrder('asc')}/>}
     </Col>
     </Row>
     <Row gutter={20}>
