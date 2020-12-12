@@ -1,7 +1,6 @@
 import React, { lazy, useEffect } from "react";
 import { Route, useRouteMatch, Switch, Redirect, useHistory } from "react-router-dom";
 import { Layout } from "antd";
-import Sidebar from "../../components/Sidebar";
 import HeaderBar from "../../components/Header";
 import SuspenseWrapper from "../../components/SuspenseWrapper";
 import BreadCrumbWrapper from "../../components/BreadCrumbWrapper";

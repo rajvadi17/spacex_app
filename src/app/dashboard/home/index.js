@@ -23,7 +23,6 @@ import {
   SortDescendingOutlined,
   SortAscendingOutlined,
 } from "@ant-design/icons";
-import { getPizzaList } from "../../../api/login";
 import {
   itemList,
   selectedList,
@@ -103,7 +102,7 @@ function Home() {
     } else {
       dispatch(selectedList(items));
     }
-    // handleSortChange(sortOrder);
+    
   };
 
   const handleSortChange = (val) => {
