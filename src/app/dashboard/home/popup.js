@@ -7,18 +7,20 @@ import {
   showLoader,
   hideLoader,
   pizzaList,
-  selectedPizzaList,
+  selectedList,
 } from "../../../duck/actions/commonActions";
 
 const { Option } = Select;
 function Popup(props) {
   const dispatch = useDispatch();
   const [addOn, setAddOn] = useState("small");
-  const [toppings, setToppings] = useState([]);
+  const [toppings, setSize] = useState([]);
   const selectedItems = useSelector(
     (state) => state.commonReducer.selectedItems
   );
   const item = selectedItems.filter((obj) => {
+    return obj.id == props.item.id;
+  }).length && selectedItems.filter((obj) => {
     return obj.id == props.item.id;
   })[0];
   const [visible, setVisible] = useState(item.isPopUp);
@@ -27,7 +29,7 @@ function Popup(props) {
        setVisible(item.isPopUp);
    }, [item.isPopUp])
   const hide = () => {
-    dispatch(selectedPizzaList(selectedItems.map((obj) => {
+    dispatch(selectedList(selectedItems.map((obj) => {
         if(obj.isPopUp == item.isPopUp){
             obj.isPopUp = false;
             return obj;
@@ -40,7 +42,7 @@ function Popup(props) {
   };
 
   const handleVisibleChange = (visible) => {
-    dispatch(selectedPizzaList(selectedItems.map((obj) => {
+    dispatch(selectedList(selectedItems.map((obj) => {
         if(obj.isPopUp == item.isPopUp){
             obj.isPopUp = false;
             return obj;
@@ -59,46 +61,31 @@ function Popup(props) {
     dispatch(saveCartItems(cartItem));
     dispatch(hideLoader());
 
-    dispatch(showNotification("success", "pizza added to cart!!! Please visit the cart"));
+    dispatch(showNotification("success", "Product added to cart!!! Please visit the cart"));
   };
-  console.log("item", item);
+
   return (
     <Popover
       content={
         <div>
           <p>Select Size: </p>
           <Select
-            defaultValue="Regular"
+            defaultValue={item.options.length && item.options[0].value}
             style={{ width: 150 }}
             onChange={(val) => setAddOn(val)}
-            allowClear
           >
-            {item.size[0].items.map((obj) => {
+            {item.options.map((obj) => {
               return (
-                <Option key={obj.size} value={obj.size}>
-                  {obj.size}
+                <Option key={obj.id} value={obj.value}>
+                  {obj.value}
                 </Option>
               );
+              })
+              
             })}
           </Select>
           <br />
-          <p>Select Topping(s): </p>
-          <Select
-            mode="multiple"
-            style={{ width: 150 }}
-            onChange={(val) => setToppings(val)}
-            allowClear
-          >
-            {/* <Option value="small">Small</Option>
-        <Option value="medium">Medium</Option> */}
-            {item.toppings[0].items.map((obj) => {
-              return (
-                <Option key={obj.name} value={obj.name}>
-                  {obj.name}
-                </Option>
-              );
-            })}
-          </Select>
+          
           <br />
           <a style={{ padding: "5px" }} onClick={AddToCart}>
             Add
@@ -108,7 +95,7 @@ function Popup(props) {
           </a>
         </div>
       }
-      title="Add-Ons and Toppings"
+      title="Add to cart"
       trigger="click"
       visible={visible}
       onVisibleChange={handleVisibleChange}

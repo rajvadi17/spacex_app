@@ -18,7 +18,7 @@ function CardDetails() {
   const cartItems = useSelector((state) => state.commonReducer.cartItems);
   const dispatch = useDispatch();
   let total = 0;
-  cartItems.forEach((obj) => {total = obj.price +total;})
+  cartItems.forEach((obj) => {total = parseInt(obj.price) +total;})
 
   const handleAdd = (item) => {
     let cartItem = { ...item, cartId: Math.floor(Math.random() * 1000) };
@@ -27,7 +27,7 @@ function CardDetails() {
     dispatch(saveCartItems(cartItem));
     dispatch(hideLoader());
 
-    dispatch(showNotification("success", "pizza added to cart!!!"));
+    dispatch(showNotification("success", "Product added to cart!!!"));
   }
 
   const handleRemove = (item) => {
@@ -49,14 +49,14 @@ function CardDetails() {
     renderItem={item => (
       <List.Item>
         <List.Item.Meta
-          avatar={<Avatar src={item.img_url} />}
-          title={<a href="https://ant.design">{item.name}</a>}
-          description={item.description}
+          avatar={<Avatar src={item.image_src[0]} />}
+          title={<b href={"https://"+item.vendor+".in"}>{item.vendor}</b>}
+          description={item.name}
         />
         <br/>
     <div className="item-no">X{cartItems.filter((obj) => obj.id == item.id).length}</div>
     <br/>
-        <div className="add-ons"><p>Add-Ons: {item.addOn}</p><p>Toppings: {item.toppings.join(',')}</p><p>Rs. {item.price}</p></div>
+        <div className="add-ons"><p>Size: {item.addOn}</p><b> ${item.price}</b></div>
         <br/>
         <div><Button onClick={() => handleAdd(item)}>Add</Button></div>
         <div className="remove-item"><Button danger onClick={() => handleRemove(item)}> Remove</Button></div>

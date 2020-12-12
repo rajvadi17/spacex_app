@@ -30,7 +30,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  debugger;
   switch (action.type) {
     case TOGGLE_MENU:
       return {
@@ -76,7 +75,7 @@ export default (state = initialState, action) => {
     case SHOW_LIST: 
     return {
       ...state,
-      pizzaList: action.payload
+      itemList: action.payload
     }
     case SELECTED_LIST: 
     return {

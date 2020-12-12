@@ -1,3 +1,3 @@
 
-export const APP_URL = "https://run.mocky.io/v3";
+export const APP_URL = "https://cdn.shopify.com/";
 

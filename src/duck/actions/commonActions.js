@@ -18,14 +18,14 @@ export const toggleMenu = () => (dispatch) => {
   });
 };
 
-export const pizzaList = (data) => (dispatch) => {
+export const itemList = (data) => (dispatch) => {
   dispatch({
     type: SHOW_LIST,
     payload: data
   });
 };
 
-export const selectedPizzaList = (data) => (dispatch) => {
+export const selectedList = (data) => (dispatch) => {
 
     dispatch({
       type: SELECTED_LIST,
