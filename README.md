@@ -1,6 +1,9 @@
 
 ## Pre-requisite
 
+Nodejs(>12.0.1)
+git version tool
+
 Install following packages before running:
 
 ### `npm install`
