@@ -37,6 +37,12 @@ function CardDetails() {
     dispatch(showNotification("warning", "Item removed from cart"));
     dispatch(hideLoader());
   }
+
+  const _cartItems = [...new Map(cartItems.map(item =>
+    [item['cartId'], item])).values()]
+
+    debugger;
+
   return (
     <>
     <h2>Cart Details</h2>
@@ -44,8 +50,8 @@ function CardDetails() {
     <List
     itemLayout="horizontal"
     bordered
-    dataSource={[...new Map(cartItems.map(item =>
-      [item['id'], item])).values()]}
+    dataSource={[...new Map(_cartItems.map(item =>
+      [item['addOn'], item])).values()]}
     renderItem={item => (
       <List.Item>
         <List.Item.Meta
@@ -54,7 +60,7 @@ function CardDetails() {
           description={item.name}
         />
         <br/>
-    <div className="item-no">X{cartItems.filter((obj) => obj.id == item.id).length}</div>
+    <div className="item-no">X{_cartItems.filter((obj) => obj.cartId == item.cartId || obj.addOn == item.addOn).length}</div>
     <br/>
         <div className="add-ons"><p>Size: {item.addOn}</p><b> ${item.price}</b></div>
         <br/>
