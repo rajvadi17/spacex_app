@@ -81,6 +81,7 @@ function Home() {
       return obj;
     });
     setFilterTypes(_filterTypes);
+    let _selectedItems;
     if (val.value == "shirt") {
       dispatch(
         selectedList(
@@ -102,13 +103,13 @@ function Home() {
     } else {
       dispatch(selectedList(items));
     }
-    
+    // handleSortChange(sortOrder);
   };
 
   const handleSortChange = (val) => {
     setSortOrder(val);
     val == "ltoh" ? dispatch(
-        itemList(
+        selectedList(
           selectedItems.sort(function (a, b) {
             return a.price - b.price;
           })
@@ -152,14 +153,7 @@ function Home() {
     dispatch(hideLoader());
   };
 
-  const onSearch = (event) => {
-    const _selectedItems = items.filter((obj) => {
-      if (obj.name.includes(event.target.value)) {
-        return true;
-      }
-    });
-    dispatch(selectedList(_selectedItems));
-  };
+ 
 
  
   return (
@@ -184,13 +178,7 @@ function Home() {
             );
           })}
         </Col>
-        {/* <Col span={2}>
-          <Search
-            placeholder="input search text"
-            allowClear
-            onChange={onSearch}
-          />
-,    margin-left: 0.5%;        </Col> */}
+        
         <Col span={4}>
           <Select
             defaultValue="Sort By: Price Low to High"

@@ -22,9 +22,8 @@ const initialState = {
     status: false,
   },
   theme: getTheme(),
-  navigationData: {},
   isMenuCollapsed: true,
-  pizzaList: [],
+  itemList: [],
   selectedItems: [],
   cartItems: []
 };
@@ -65,11 +64,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         theme: action.payload,
-      };
-    case SET_NAVIGATION_DATA:
-      return {
-        ...state,
-        navigationData: action.payload,
       };
       
     case SHOW_LIST: 

@@ -1,10 +1,13 @@
 import React from "react";
-import { Layout, Button, Input } from "antd";
-import { useDispatch } from "react-redux";
+import { Layout, Button, Input, Row, Col } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../../duck/actions/commonActions";
 import hamburgerIcon from "../../assets/icons/hamburger.svg";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/shop-trade.png"
+import {
+  selectedList,
+} from "../../duck/actions/commonActions";
 import "./style.scss";
 import { ShoppingCartOutlined }  from '@ant-design/icons';
 import { useHistory } from "react-router";
@@ -18,8 +21,21 @@ const HeaderBar = () => {
     dispatch(toggleMenu());
   };
 
+  const items = useSelector((state) => state.commonReducer.itemList);
+
+  const onSearch = (event) => {
+    const _selectedItems = items.filter((obj) => {
+      if (obj.name.includes(event.target.value) || obj.vendor.includes(event.target.value)) {
+        return true;
+      }
+    });
+    dispatch(selectedList(_selectedItems));
+  };
+
   return (
     <Header id="header">
+      <Row >
+        <Col span={18}>
       <div id="hamburger" className="inline">
         <Button onClick={toggleCollapsed}>
         <Link to="/dashboard/home">
@@ -32,11 +48,22 @@ const HeaderBar = () => {
         </Button>
         
       </div>
+      </Col>
+      <Col span={5}>
+          <Search
+            placeholder="search for brand or item"
+            allowClear
+            onChange={onSearch}
+          />
+     </Col>
+      <Col span={1}>
       <div className="heading" >
       <Link to="/dashboard/cart">
       <ShoppingCartOutlined />
       </Link>
       </div>
+      </Col>
+      </Row>
     </Header>
   );
 };

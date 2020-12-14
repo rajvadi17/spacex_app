@@ -84,9 +84,4 @@ export const setTheme = (theme) => (dispatch) => {
   });
 };
 
-export const setNavigationData = (data) => (dispatch) => {
-  dispatch({
-    type: SET_NAVIGATION_DATA,
-    payload: data
-  })
-};
+

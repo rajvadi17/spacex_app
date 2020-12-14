@@ -5,7 +5,7 @@ export const getTheme = () => {
   if (today >= 7 && today <= 18) {
     theme = "light";
   } else {
-    theme = "light";
+    theme = "dark";
   }
   return theme;
 };
