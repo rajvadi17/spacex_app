@@ -3,9 +3,8 @@
 
 Insall following packages before running:
 
-### `npm install less less-plugin-clean-css -g`
 ### `npm install`
-less-cli is used to customize ant-design theme and convert less to css for app usage
+
 ----------------------------------------------------
 
 
