@@ -9,7 +9,6 @@ import "./dashboard.scss";
 // DASHBOARD ROUTE COMPONENTS
 const Home = lazy(() => import("./home"));
 
-const Cart = lazy(() => import("./cartdetails"));
 
 const { Content } = Layout;
 
@@ -28,9 +27,6 @@ const Dashboard = () => {
               <Switch>
                 <Route key="home" path={`${match.url}/home`} >
                   <Home />
-                </Route>
-                <Route key="cart" path={`${match.url}/cart`} >
-                  <Cart />
                 </Route>
                 <Route key="redirect">
                   <Redirect to={`${match.url}/login`} />

@@ -39,9 +39,8 @@ const HeaderBar = () => {
       <div id="hamburger" className="inline">
         <Button onClick={toggleCollapsed}>
         <Link to="/dashboard/home">
-          <img style={{height: '28px',width: '33px'}} src={logo} alt="menu" />
           <div className="heading" >
-          <h1 style={{ marginLeft: '10px'}}>Shop Trade</h1>
+          <h1 style={{ marginLeft: '10px'}}><b>SpaceX Launch Programs</b></h1>
          
           </div>
           </Link>
@@ -49,20 +48,7 @@ const HeaderBar = () => {
         
       </div>
       </Col>
-      <Col span={5}>
-          <Search
-            placeholder="search for brand or item"
-            allowClear
-            onChange={onSearch}
-          />
-     </Col>
-      <Col span={1}>
-      <div className="heading" >
-      <Link to="/dashboard/cart">
-      <ShoppingCartOutlined />
-      </Link>
-      </div>
-      </Col>
+      
       </Row>
     </Header>
   );

@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-  List,
-  Avatar,
   Card,
-  Col,
   Row,
-  Switch,
   Select,
-  Rate,
   Input,
   Button,
 } from "antd";
-import {
-  showNotification,
-  showLoader,
-  hideLoader,
-} from "../../../duck/actions/commonActions";
+import Loading from '../../../components/Loading';
 import { useSelector, useDispatch } from "react-redux";
 import {
   PlusOutlined,
@@ -29,7 +20,7 @@ import {
   removeCartItem,
 } from "../../../duck/actions/commonActions";
 import * as data from "../../../assets/data.json";
-import Popup from "./popup";
+// import Popup from "./popup";
 import LogOutIcon from "../../../assets/icons/log-off.svg";
 
 const { Meta } = Card;
@@ -38,219 +29,220 @@ const { Search } = Input;
 function Home() {
   const dispatch = useDispatch();
   const [filterType, setFilterType] = useState("All Products");
+
   const items = useSelector((state) => state.commonReducer.itemList);
   const selectedItems = useSelector(
     (state) => state.commonReducer.selectedItems
   );
-  const cartItems = useSelector((state) => state.commonReducer.cartItems);
-  const [sortOrder, setSortOrder] = useState("ltoh");
+  const [launchSuccess, setLaunchSuccess] = useState(false);
+  const [launchLanding, setLaunchLanding] = useState(false);
+  const [selectedYear, setSelectedYear] = useState('');
+  const [showLoader, setShowLoader] = useState(false);
   const [filterTypes, setFilterTypes] = useState([
-    { label: "All Products", value: "all", color: true },
-    { label: "Tee shirt", value: "T-shirt", color: false },
-    { label: "Denim", value: "Denim", color: false },
-    { label: "Sweatshirts", value: "sweatshirt", color: false },
-    { label: "Polo Tee Shirt", value: "polo", color: false },
-    { label: "Shirt", value: "shirt", color: false },
+    { label: "2006", value: "2006", color: false },
+    { label: "2007", value: "2007", color: false },
+    { label: "2008", value: "2008", color: false },
+    { label: "2009", value: "2009", color: false },
+    { label: "2010", value: "2010", color: false },
+    { label: "2011", value: "2011", color: false },
+    { label: "2012", value: "2012", color: false },
+    { label: "2013", value: "2013", color: false },
+    { label: "2014", value: "2014", color: false },
+    { label: "2015", value: "2015", color: false },
+    { label: "2016", value: "2016", color: false },
+    { label: "2017", value: "2017", color: false },
+    { label: "2018", value: "2018", color: false },
+    { label: "2019", value: "2019", color: false },
+    { label: "2020", value: "2020", color: false }
   ]);
-  const [disabled, setDisabled] = useState(true);
+
   useEffect(() => {
+    // dispatch(itemList());
+    let queryParam ='';
     
-    console.log(data.default);
-    let jsonData = data.default;
-    jsonData = jsonData.map((obj) => {
-      obj["isPopUp"] = false;
-      return obj;
-    });
-    jsonData = jsonData.sort(function (a, b) {
-            return a.price - b.price;
-          })
-      
-    dispatch(itemList(jsonData));
-    dispatch(selectedList(jsonData));
-  }, []);
-
-  const handleTypeChange = (val) => {
-    // setPizzaType(checked);
-    setFilterType(val.label);
-    const _filterTypes = filterTypes.map((obj) => {
-      if (obj.value == val.value) {
-        obj.color = true;
-      } else {
-        obj.color = false;
-      }
-      return obj;
-    });
-    setFilterTypes(_filterTypes);
-    let _selectedItems;
-    if (val.value == "shirt") {
-      dispatch(
-        selectedList(
-          items.filter((obj) => {
-            return val.value == obj.tag;
-          })
-        )
-      );
-    } else if (val.value != "all") {
-      dispatch(
-        selectedList(
-          items.filter((obj) => {
-            return (
-              val.value == obj.tag || obj.name.toLowerCase().includes(val.value)
-            );
-          })
-        )
-      );
-    } else {
-      dispatch(selectedList(items));
+    if(launchSuccess == 'True'){
+      queryParam = queryParam + '&launch_success=true';
+    }else if(launchSuccess == 'False'){
+      queryParam = queryParam + '&launch_success=false';
     }
-    // handleSortChange(sortOrder);
-  };
+    if(launchLanding == 'True'){
+      queryParam = queryParam + '&launch_landing=true';
+    } else if(launchLanding == 'False'){
+      queryParam = queryParam + '&launch_landing=false';
+    }
+    if(selectedYear){
+      queryParam = queryParam + '&launch_year='+ selectedYear;
+      }
+      setShowLoader(true);
+      dispatch(itemList(queryParam)).then(()=> {
+        setShowLoader(false);
+      });
+    // dispatch(selectedList());
+  }, [launchSuccess, launchLanding, selectedYear]);
 
-  const handleSortChange = (val) => {
-    setSortOrder(val);
-    val == "ltoh" ? dispatch(
-        selectedList(
-          selectedItems.sort(function (a, b) {
-            return a.price - b.price;
-          })
-        )
-      ):
-      dispatch(
-        selectedList(
-          selectedItems.sort(function (a, b) {
-            return b.price - a.price;
-          })
-        )
-      );
+  const handleQueryParam = (obj) => {
    
-  };
+    if(obj){
+      setSelectedYear(obj.value);
+    
+    } 
+  }
 
-  const handleAdd = (item) => {
-    let _items = items.map((obj) => {
-      if (item.id == obj.id) {
-        obj.isPopUp = true;
-        return obj;
-      } else {
-        return obj;
-      }
-    });
-    let _selectedItems = selectedItems.map((obj) => {
-      if (item.id == obj.id) {
-        obj.isPopUp = true;
-        return obj;
-      } else {
-        return obj;
-      }
-    });
-    dispatch(itemList(_items));
-    dispatch(selectedList(_selectedItems));
-  };
 
-  const handleRemove = (item) => {
-    dispatch(removeCartItem(cartItems.filter((obj) => item.id == obj.id)[0]));
-    dispatch(showLoader());
-    dispatch(showNotification("warning", "Item removed from cart"));
-    dispatch(hideLoader());
-  };
+  const handleLandingSuccess = (obj) => {
+    console.log(obj);
+    
+      setLaunchLanding(obj);
+    handleQueryParam();
+  }
 
- 
+  const handleLaunchSuccess = (obj) => {
 
+      setLaunchSuccess(obj);
+
+    handleQueryParam();
+  }
+
+  const handleClearAll = () => {
+    setLaunchSuccess('');
+    setSelectedYear('');
+    setLaunchLanding('');
+  }
  
   return (
     <>
     <Row gutter={[16, 16]}>
-  <h2 style={{marginTop: '1.2%',marginLeft: '0.5%'}}><b>{filterType}</b>{"  (" + selectedItems.length + " Products)" }</h2>
+  <h2 style={{marginTop: '1.2%',marginLeft: '0.5%'}}><b>{filterType}</b>{"  (" + items.length + " Products)" }</h2>
     </Row>
-      <Row gutter={[24, 16]}>
-      <h3 style={{marginTop: '1.2%',marginLeft: '0.5%'}}><b>FILTERS:{" "}</b></h3>
-        <Col span={18}>
+    <div className="flex-container">
+      {showLoader&& <Loading show={showLoader}/>}
+    <div style={{minWidth: '230px', maxWidth: "230px"}} >
+      <h3><b style={{marginTop: '1.2%',marginLeft: '0.5%'}}>Filters:{" "}</b></h3>
+      <br/>
+
+      <div style={{flexWrap:'wrap', display: 'flex'}}>
+
+              <div style={{margin: '10px', minWidth: '230px'}}>
+              <Button
+                size="large"
+                className="filter-btn-inactive"
+                type={ "default"}
+                onClick={() => handleClearAll()}
+              >
+                Clear All
+              </Button>
+              </div>
+        </div>
+      <b style={{marginTop: '1.2%',marginLeft: '0.5%', align: 'center'}}><u>Launch Year:{" "}</u></b>
+        <div style={{flexWrap:'wrap', display: 'flex'}}>
           
           {filterTypes.map((obj) => {
             return (
+              <div style={{margin: '10px'}}>
               <Button
                 size="large"
-                type={obj.color ? "primary" : "default"}
-                className="filter-btn"
-                onClick={() => handleTypeChange(obj)}
+                className={obj.value == selectedYear ? "filter-btn-active" : "filter-btn-inactive"}
+                type={ "default"}
+                onClick={() => handleQueryParam(obj)}
               >
                 {obj.label}
               </Button>
+              </div>
             );
           })}
-        </Col>
-        
-        <Col span={4}>
-          <Select
-            defaultValue="Sort By: Price Low to High"
-            className="sort-select"
-            style={{ width: 250 }}
-            onChange={(val) => handleSortChange(val)}
-          >
-            <Option value="ltoh">Sort By: Low to High</Option>
-            <Option value="htol">Sort By: High to Low</Option>
-          </Select>
-          {/* <h4 style={{ float: "right", fontSize: "15px" }}>SortBy</h4>
-          {sortOrder == "asc" && (
-            <SortDescendingOutlined
-              className="ascending-icon"
-              // onClick={() => handleSortOrder("dsc")}
-            />
-          )}
-          {sortOrder == "dsc" && (
-            <SortAscendingOutlined
-              className="ascending-icon"
-              // onClick={() => handleSortOrder("asc")}
-            />
-          )} */}
-        </Col>
-      </Row>
-      <Row gutter={[48, 8]}>
-        {selectedItems.length ? (
-          selectedItems.map((item) => {
+        </div>
+        <b style={{marginTop: '1.2%',marginLeft: '0.5%', align: 'center'}}><u>Successful Launch:{" "}</u></b>
+        <div style={{flexWrap:'wrap', display: 'flex'}}>
+          
+          {["True", "False"].map((obj) => {
             return (
-              <Col>
+              <div style={{margin: '10px'}}>
+              <Button
+                size="large"
+                className={ launchSuccess == obj ? "filter-btn-active" : "filter-btn-inactive"}
+                type={ "default"}
+                onClick={() => handleLaunchSuccess(obj)}
+              >
+                {obj}
+              </Button>
+              </div>
+            );
+          })}
+        </div>
+        <b style={{marginTop: '1.2%',marginLeft: '0.5%', align: 'center'}}><u>Successful Landing:{" "}</u></b>
+        <div style={{flexWrap:'wrap', display: 'flex'}}>
+          
+          {["True", "False"].map((obj) => {
+            return (
+              <div style={{margin: '10px'}}>
+              <Button
+                size="large"
+                className={launchLanding == obj ? "filter-btn-active" : "filter-btn-inactive"}
+                type={ "default"}
+                onClick={() => handleLandingSuccess(obj)}
+              >
+                {obj}
+              </Button>
+              </div>
+            );
+          })}
+        </div>
+        
+        
+      </div>
+      <div style={{flexWrap:'wrap', display: 'flex'}}>
+        {items.length ? (
+          items.map((item) => {
+            return (
+              <div style={{margin: '10px'}}>
                 <Card
                   hoverable
-                  actions={[
-                    <MinusOutlined onClick={() => handleRemove(item)} />,
-                    <PlusOutlined onClick={() => handleAdd(item)} />,
-                  ]}
+                  // actions={[
+                  //   <MinusOutlined onClick={() => handleRemove(item)} />,
+                  //   <PlusOutlined onClick={() => handleAdd(item)} />,
+                  // ]}
                   hoverable
-                  style={{ width: 225 }}
+                  style={{ width: 240 }}
                   cover={
                     <img
-                      alt="image"
-                      src={item.image_src[0]}
-                      style={{ height: "300px", width: "225px" }}
+                      alt="image not found"
+                      src={item.links.flickr_images}
+                      style={{ height: "300px", width: "240px" }}
                     />
                   }
                 >
-                  <Meta title={item.vendor} description={item.name} />
+                  <Meta title={item.mission_name + '  #' + item.flight_number}  />
                   {/* <Rate disabled defaultValue={item.rating} value={item.rating} allowHalf={true}/> */}
                   <div>
                   <p>
-                    <b>${item.price}  </b>
-                    
-                      <s>${item.compare_at_price}</s>
-                      <span style={{ color: "red" }}>
+                  <b>Machine Ids: </b>{item.mission_id.join(",")  || '-'}  
+                  <br/>
+                    <b>Launch Year:  </b>{item.launch_year} 
+                    <br/>
+                      <b>Successful Launch:  </b>{item.launch_success.toString()}
+                      <br/>
+                      <b>Successful Landing: </b> {item.launch_landing ? item.launch_landing.toString() : '-'}
+                      {/* <span style={{ color: "red" }}>
                         ({Math.round(
                           ((item.compare_at_price - item.price) /
                             item.compare_at_price) *
                             100
                         )}
                         % OFF)
-                      </span>
+                      </span> */}
                     </p>
                   </div>
-                  {<Popup item={item} />}
+                  {/* {<Popup item={item} />} */}
                 </Card>
-              </Col>
+              </div>
             );
           })
         ) : (
-          <h2>No items found</h2>
+          <h2>No Data Found</h2>
         )}
-      </Row>
+      </div>
+      </div>
+      
     </>
   );
 }

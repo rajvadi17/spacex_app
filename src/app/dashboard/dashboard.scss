@@ -15,9 +15,36 @@
     padding: 0px;
 }
 
+.filter-btn-active{
+  background-color: rgb(178, 231, 71);
+  min-width: 79px;
+  
+}
+
+.filter-btn-active:hover{
+    border-color:  rgb(178, 231, 71);
+    min-width: 79px;
+    color: rgb(169, 252, 5);
+}
+
+.filter-btn-inactive{
+    background-color: rgb(228, 255, 173);
+    min-width: 79px;
+  }
+
+  .filter-btn-inactive:hover{
+    border-color:  rgb(228, 255, 173);
+    color: rgb(148, 240, 0);
+    min-width: 79px;
+}
 .ascending-icon{
     float: right;
     font-size: 20px;
+    min-width: 66px;
+}
+
+.filter-btn>* {
+    flex: 1 1 160px;
 }
 
 .filter-btn{
@@ -44,3 +71,17 @@
 .ant-select-selection-item{
     font-weight: 800;
 }
+
+.flex-container {
+    display: flex;
+    align-items: stretch;
+    flex-direction: row;
+    background-color: #f1f1f1;
+  }
+
+  .flex-container > div {
+    background-color: #f1f1f1;
+    margin: 10px;
+    // padding: 20px;
+    font-size: 15px;
+  }

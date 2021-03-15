@@ -11,6 +11,8 @@ import {
     REMOVE_ITEM,
     SET_NAVIGATION_DATA
 } from '../types/types';
+import {AjaxService} from '../../utils/AjaxService';
+import {APP_URL} from '../../constants/apiBaseUrl';
 
 export const toggleMenu = () => (dispatch) => {
   dispatch({
@@ -18,10 +20,11 @@ export const toggleMenu = () => (dispatch) => {
   });
 };
 
-export const itemList = (data) => (dispatch) => {
+export const itemList = (data) => async (dispatch) => {
+  let res = await AjaxService.get(APP_URL+data);
   dispatch({
     type: SHOW_LIST,
-    payload: data
+    payload: res.data
   });
 };
 

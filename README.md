@@ -26,3 +26,14 @@ You will also see any lint errors in the console.
 user: demo
 password: demo
 
+
+### stack details
+
+ReactJs
+React hooks
+Redux
+Javascript
+Html CSS
+
+
+
